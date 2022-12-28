@@ -31,11 +31,12 @@ $services = $services | where-object {$_.Pathname.Contains(" ")}
 $services = $services | where-object {-NOT ($_.pathname.Startswith("`""))}
 
 foreach ($service in $services) {
-$scname = $service.name
-$scpath = $service.pathname
-$newpath = """" + $scpath + """"
+    $scname = $service.name
+    $scpath = $service.pathname
+    $newpath = """" + $scpath + """"
 
-Get-WmiObject win32_service -filter "Name='$scname'" | Invoke-WmiMethod -Name Change -ArgumentList @($null,$null,$null,$null,$null,$newpath)
-#To remove double quotes use this syntax
-#$newpath.Replace("`"","")
+    #Write Path to the Service
+    Get-WmiObject win32_service -filter "Name='$scname'" | Invoke-WmiMethod -Name Change -ArgumentList @($null,$null,$null,$null,$null,$newpath)
+    #To remove double quotes use this syntax
+    #$newpath.Replace("`"","")
 }
